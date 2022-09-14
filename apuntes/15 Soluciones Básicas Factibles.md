@@ -301,3 +301,88 @@ En el caso de escribir $x_k$ como en la expresión inmediata anterior, la variab
 | Minimizar | $x_1+x_2$                                      |
 | --------- | ---------------------------------------------- |
 | Sujeto a  | $$x_1+2x_2 \le4 \\ x_2\le 1 \\ x_1,x_2 \ge 0$$ |
+
+$$
+\begin{eqnarray}
+x_1+2x_2+x_3+0&=&4\\
+x_2+0+x_4&=&1
+\end{eqnarray}
+$$
+
+| Minimizar $Z=z(x)=cx$                                        | $(c_1,c_2,c_3,c_4)\\(1,1,0,0)$                               |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Sujeto a $Ax=b$  $$\qquad A=\begin{bmatrix}1&2&1&0\\0&1&0&1\end{bmatrix}$$ | $$x=\begin{pmatrix}x_1\\x_2\\x_3\\x_4\end{pmatrix}\\b=\begin{pmatrix} 4\\1\end{pmatrix}$$ |
+
+Definimos $B$ escogiendo $m$ columnas de $A$, *l.i.* $(A \in \mu_{m \times n}(\mathbb R),\quad rank(A)=m)$, digamos:
+$$
+B=\begin{bmatrix}1&2\\0&1\end{bmatrix}, \quad N=\begin{bmatrix}1&0\\0&1\end{bmatrix},
+$$
+Construimos la solución básica factible:
+$$
+\begin{pmatrix}x_B\\x_N\end{pmatrix} = \begin{pmatrix}B^{-1}b\\0\end{pmatrix}=
+\begin{pmatrix}2\\1\\0\\0\end{pmatrix}
+$$
+Veamos si podemos mejorar el rendimiento de $x_1$. Calcularemos $x_j, j \in R = \{\text{indicar No básicos}\} = \{3,4\}$ 
+$$
+\begin{eqnarray}
+z_x&=&c_BB^{-1} \mathbb a\\
+z_3 &=& (1,1)\begin{bmatrix}1&-1\\0&1\end{bmatrix}\begin{pmatrix}1\\0\end{pmatrix}\\
+&=& (1,-1)\begin{pmatrix}1\\0\end{pmatrix} = 1\\
+z_j&-&c_j=1-0=1\\
+\\
+z_4 &=& (1,1)\begin{bmatrix}1&-2\\0&1\end{bmatrix}\begin{pmatrix}0\\1\end{pmatrix}\\
+&=& (1,-1)\begin{pmatrix}0\\1\end{pmatrix} = -1
+\end{eqnarray}
+$$
+
+$$
+k=3 \qquad Y_k=B^{-1}a_k \sim Y_3=B^{-1}a_3\\
+\begin{eqnarray}
+\bar{x_B} &=& B^{-1}b -Y_kx_k\\
+&=&\begin{bmatrix}2\\1\end{bmatrix}-\begin{pmatrix}1\\0\end{pmatrix}x_3
+\end{eqnarray}
+$$
+
+
+$$
+x_3= 2=x_k = \min_{1 \le i \le m}\left\lbrace
+\frac{\bar{b_i}}{Y_{ik}} : Y_{ik} >0 \right\rbrace = \frac{\bar{b_r}}{Y_{rk}}=x_k=x_3
+$$
+Hemos calculado que $k = 3.\quad r=1,\quad x_k = 2$. Actualizando los datos intercambiando los valores de las variables $1$ y $3$.
+$$
+x_2=\begin{pmatrix}0\\1\\2\\0\end{pmatrix}\qquad x_2=\begin{pmatrix}2\\1\\0\\0\end{pmatrix}\\
+A=\begin{bmatrix}1&2&1&0\\0&1&0&1\end{bmatrix}\\
+b=\begin{pmatrix}4\\1\end{pmatrix}\qquad x_2=\begin{pmatrix}0\\1\\1\\0\end{pmatrix}
+$$
+Así seguiremos el proceso de manera iterativa hasta ver si se puede seguir consiguiendo una mejor solución, que se explica en la siguiente sección.
+
+## Interpretación de $z_x-c_k$
+
+Dos preguntas lógicas surgen inmediatamente ¿Qué sucede si para cada variable no básica $x_j$ se tiene $z_j-c_k\le0$?. Segundo, supongamos que $z_x-c_k>0$ pero $Y_k\le0$ ¿Qué sucede en $r$?.
+
+En el primer caso **hemos alcanzado una solución básica factile óptima**. 
+
+En el segundo caso, se concluye que la solución **no es acotada**.
+
+Supongamos que $X^*$ es una solución básica factible con base $B$ 
+$$
+X^* = \begin{pmatrix}B^{-1}b\\0\end{pmatrix}\quad sea \quad z^*
+$$
+Definida como
+$$
+z^* = c_BB^{-1}b
+$$
+que $z_j -c_j\le 0 \quad \forall j$  no básica entonces para cualquier otra solución básica factible $x$ en evaluación $z$
+$$
+z^*-z= \sum_{j\in R}(x_j-c_j)x_j\le0\\
+z^*\le z
+$$
+Si $z_j-c_j<0 \quad \forall j$ no básica, entonces la solución es única, si no, es decir existe $z_j-c_j = 0$ con $j$ básica, entonces se puede variar $x_j$ y obtener una infinidad de soluciones óptimas.
+
+## Condiciones de acotamiento
+
+Supongamos que tenemos una solución básica factible de $Ax=b, \quad x\ge 0$ y que encontramos $k$ no básico tal que $z_k-c_k>0$ y que $Y_k \le 0$. Luego 
+$$
+z = z_0- \sum_{j\in R}(z_k-c_k)x_k\\\
+x_B = B^{-1}b-Y_kx_k
+$$
